@@ -1,23 +1,12 @@
 from os import path as OSPath
 import math
 import tkinter as TTK
-from Imports import Mandelbrot_Base_Functions as Mandel, Mandelbrot_File_Functions as Files
+from mandel_imports import basefuncs as Mandel, filefuncs as Files
+from mandel_imports import baseconsts
 from threading import Thread
 
-Current_Program_Location = f"{OSPath.dirname(OSPath.realpath(__file__))}\\"
-Image_Folder = f"{Current_Program_Location}Images\\"
-Image_Import_Folder = f"{Current_Program_Location}Imports\\Images_For_Importing\\"
-Mandel_PPM_Save_Location = f"{Image_Folder}Mandelbrot PPMs\\"
-Gradient_PPM_Save_Location = f"{Image_Folder}Gradient PPMs\\"
-Resolution_Standard = (480, 288)
-Resolution_Half = (240, 144)
-Resolution_Quarter = (120, 72)
-Resolution_Eighth = (60, 36)
-Resolution_List = [Resolution_Standard, Resolution_Half, Resolution_Quarter, Resolution_Eighth]
-
 Main_Program = TTK.Tk()
-Main_Program.iconbitmap(f"{Image_Import_Folder}Mandel_Program_Icon.ico")
-
+Main_Program.iconbitmap(f"{baseconsts.__IMAGE_IMPORT_FOLDER}Mandel_Program_Icon.ico")
 
 def Zoom_In_Or_Out(event):
 
@@ -227,7 +216,7 @@ def Rerender_Mandelbrot(Zoom_Level, Center_Real, Center_Imag):
                                                             float(TTK_VAR_Mandelbrot_Center_Imag.get()),
                                                             int(TTK_VAR_Mandelbrot_Zoom.get()),
                                                             int(TTK_VAR_Mandelbrot_Max_Iter.get()),
-                                                            Resolution_List[3-Render_Level]) 
+                                                            baseconsts.RESOLUTION_LIST[3-Render_Level]) 
         TTK_VAR_Mandelbrot_Test_Iter_List.set(New_Mandelbrot_List)
         Mandelbrot_Image_Reference.configure(data = Mandel.Mandel_Color_To_Bytes(
                 Mandel.Color_Mandel_List(
@@ -305,9 +294,9 @@ Save_Mandelbrot_Image.configure(command=lambda:Files.Save_PPM_Bytes(Mandel.Mande
                                                                             TTK_VAR_Mandelbrot_Max_Iter.get(),
                                                                             (TTK_VAR_Saved_Mandel_Resolution_Real.get(), TTK_VAR_Saved_Mandel_Resolution_Imag.get())),
                                                                     TTK_VAR_Gradient_Test_List.get()), 1),
-                                                                                                   Mandel_PPM_Save_Location, "Mandelbrot"))\
+                                                                                                   baseconsts.__MANDEL_PPM_LOC, "Mandelbrot"))\
 
-Save_Gradient_Image.configure(command=lambda:Files.Save_PPM_Bytes(Mandel.Gradient_Color_To_Bytes(TTK_VAR_Gradient_Test_List.get()), Gradient_PPM_Save_Location, "Gradient"))
+Save_Gradient_Image.configure(command=lambda:Files.Save_PPM_Bytes(Mandel.Gradient_Color_To_Bytes(TTK_VAR_Gradient_Test_List.get()), baseconsts.__GRADIENT_PPM_LOC, "Gradient"))
 
 Mandelbrot_Image_Label.bind(sequence="<Button-1>", func=lambda event:Set_Mouse_Click_Location())
 
